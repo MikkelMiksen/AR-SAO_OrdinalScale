@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="SAOStyles.uss" />
+    <ui:VisualElement name="HUDScreen" class="sao-hud-container">
+        <ui:VisualElement name="LeftGroup" class="sao-stat-group">
+            <ui:VisualElement class="sao-bar-row">
+                <ui:Label text="HP" class="sao-bar-tag" />
+                <ui:VisualElement class="sao-bar-container">
+                    <ui:VisualElement name="HealthBarFill" class="sao-bar-fill health-fill" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="sao-bar-row">
+                <ui:Label text="SP" class="sao-bar-tag" />
+                <ui:VisualElement class="sao-bar-container">
+                    <ui:VisualElement name="StaminaBarFill" class="sao-bar-fill stamina-fill" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="RightGroup" class="sao-info-group">
+            <ui:Label text="Wave: 1" name="WaveText" class="sao-label" />
+            <ui:Label text="Enemies: 0" name="EnemyCountText" class="sao-label" />
+            <ui:Label text="Score: 0" name="ScoreText" class="sao-label" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d082ebefeae84426811bb4b72432169e, type: 3}
+  m_Name: Sword_LambentLight
+  m_EditorClassIdentifier: Scripts::SwordData
+  swordName: Lambent Light
+  prefab: {fileID: 1284645671007503973, guid: 5efc468b3b9b23f4aadd467500580205, type: 3}
+  damage: 22
+  staminaCost: 12
+  icon: {fileID: 0}
+  themeColor: {r: 1, g: 0.85, b: 0.4, a: 1}

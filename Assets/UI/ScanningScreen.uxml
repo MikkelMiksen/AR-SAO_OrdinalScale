@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="SAOStyles.uss" />
+    <ui:VisualElement name="ScanningScreen" class="sao-root">
+        <ui:VisualElement class="sao-card">
+            <ui:Label text="AUGMA AR CALIBRATION" class="sao-title" />
+            <ui:Label text="Scanning room environment geometry..." name="StatusText" class="sao-subtitle" />
+            <ui:Label text="Please look around your physical room." class="sao-label" style="font-size: 16px; color: #a0c4d8;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

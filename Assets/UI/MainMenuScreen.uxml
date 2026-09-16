@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="SAOStyles.uss" />
+    <ui:VisualElement name="MainMenuScreen" class="sao-root">
+        <ui:VisualElement class="sao-card">
+            <ui:Label text="SWORD ART ONLINE" class="sao-title" />
+            <ui:Label text="<< ORDINAL SCALE : AR COMBAT >>" class="sao-subtitle" />
+            <ui:Button text="LINK START" name="PlayButton" class="sao-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
