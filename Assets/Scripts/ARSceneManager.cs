@@ -8,6 +8,8 @@ using System.Collections.Generic;
 /// </summary>
 public class ARSceneManager : MonoBehaviour
 {
+    public static ARSceneManager Instance { get; private set; }
+
     [Header("Meta Scene SDK")]
     public OVRSceneManager ovrSceneManager;
 
@@ -40,6 +42,14 @@ public class ARSceneManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if (ovrSceneManager == null)
             ovrSceneManager = GetComponent<OVRSceneManager>();
 
@@ -61,13 +71,13 @@ public class ARSceneManager : MonoBehaviour
     {
         Debug.Log("[SAO] Starting Room Scan...");
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         if (enableEditorMockRoom)
         {
             StartCoroutine(SimulateEditorScanRoutine());
             return;
         }
-        #endif
+#endif
 
         if (ovrSceneManager != null)
         {
@@ -90,7 +100,8 @@ public class ARSceneManager : MonoBehaviour
 
     private void CreateMockRoom()
     {
-        if (_mockRoomRoot != null) Destroy(_mockRoomRoot);
+        if (_mockRoomRoot != null)
+            Destroy(_mockRoomRoot);
         _mockRoomRoot = new GameObject("MockRoom");
 
         _mockWalls.Clear();
@@ -146,7 +157,8 @@ public class ARSceneManager : MonoBehaviour
         planeObj.transform.localScale = new Vector3(size.x, size.y, 1f);
 
         var mc = planeObj.GetComponent<MeshCollider>();
-        if (mc != null) Destroy(mc);
+        if (mc != null)
+            Destroy(mc);
 
         var box = planeObj.AddComponent<BoxCollider>();
         box.size = new Vector3(1f, 1f, 0.05f);
@@ -196,7 +208,8 @@ public class ARSceneManager : MonoBehaviour
                     if (plane != null)
                     {
                         _walls.Add(plane);
-                        if (showVisualDebugger) CreateDebugPlane(plane, wallDebugMaterial);
+                        if (showVisualDebugger)
+                            CreateDebugPlane(plane, wallDebugMaterial);
                     }
                 }
                 else if (classification.Contains(OVRSceneManager.Classification.Ceiling))
@@ -204,7 +217,8 @@ public class ARSceneManager : MonoBehaviour
                     if (plane != null)
                     {
                         _ceilings.Add(plane);
-                        if (showVisualDebugger) CreateDebugPlane(plane, ceilingDebugMaterial);
+                        if (showVisualDebugger)
+                            CreateDebugPlane(plane, ceilingDebugMaterial);
                     }
                 }
                 else if (classification.Contains(OVRSceneManager.Classification.Floor))
@@ -215,9 +229,11 @@ public class ARSceneManager : MonoBehaviour
                         if (floorPhysicsMaterial != null)
                         {
                             var collider = plane.GetComponent<MeshCollider>();
-                            if (collider != null) collider.material = floorPhysicsMaterial;
+                            if (collider != null)
+                                collider.material = floorPhysicsMaterial;
                         }
-                        if (showVisualDebugger) CreateDebugPlane(plane, floorDebugMaterial);
+                        if (showVisualDebugger)
+                            CreateDebugPlane(plane, floorDebugMaterial);
                     }
                 }
                 else
@@ -225,12 +241,14 @@ public class ARSceneManager : MonoBehaviour
                     // Everything else (Tables, Desks, Couches, etc.)
                     _furniture.Add(anchor);
                     Debug.Log($"[SAO] Furniture detected: {anchor.name} classified as {string.Join(", ", classification.Labels)}");
-                    
+
                     // Add collider if missing to ensure they aren't ignored by physics/raycasts
                     if (anchor.GetComponent<Collider>() == null)
                     {
-                        if (volume != null) anchor.gameObject.AddComponent<BoxCollider>();
-                        else if (plane != null) anchor.gameObject.AddComponent<BoxCollider>().size = new Vector3(plane.Dimensions.x, plane.Dimensions.y, 0.01f);
+                        if (volume != null)
+                            anchor.gameObject.AddComponent<BoxCollider>();
+                        else if (plane != null)
+                            anchor.gameObject.AddComponent<BoxCollider>().size = new Vector3(plane.Dimensions.x, plane.Dimensions.y, 0.01f);
                     }
                 }
             }
@@ -245,7 +263,7 @@ public class ARSceneManager : MonoBehaviour
         debugObj.name = "DebugPlane_" + plane.gameObject.name;
         debugObj.transform.SetParent(plane.transform, false);
         debugObj.transform.localScale = new Vector3(plane.Dimensions.x, plane.Dimensions.y, 1f);
-        
+
         var renderer = debugObj.GetComponent<MeshRenderer>();
         if (renderer != null && material != null)
         {
@@ -253,7 +271,8 @@ public class ARSceneManager : MonoBehaviour
         }
 
         var collider = debugObj.GetComponent<Collider>();
-        if (collider != null) Destroy(collider);
+        if (collider != null)
+            Destroy(collider);
     }
 
     public Vector3 GetRandomPointOnWall()

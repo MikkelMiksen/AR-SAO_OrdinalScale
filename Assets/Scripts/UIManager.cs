@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Documents")]
     public UIDocument uiDocument;
-    
+
     [Header("Visual Tree Assets")]
     public VisualTreeAsset scanningTemplate;
     public VisualTreeAsset mainMenuTemplate;
@@ -27,11 +27,21 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else if (Instance != this) { Destroy(gameObject); return; }
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        if (uiDocument == null) uiDocument = GetComponent<UIDocument>();
-        if (uiDocument != null) _root = uiDocument.rootVisualElement;
+        if (uiDocument == null)
+            uiDocument = GetComponent<UIDocument>();
+        if (uiDocument != null)
+            _root = uiDocument.rootVisualElement;
     }
 
     private void Start()
@@ -44,19 +54,23 @@ public class UIManager : MonoBehaviour
 
     private void SetScreen(VisualTreeAsset template)
     {
-        if (uiDocument == null) uiDocument = GetComponent<UIDocument>();
-        if (uiDocument != null) _root = uiDocument.rootVisualElement;
+        if (uiDocument == null)
+            uiDocument = GetComponent<UIDocument>();
+        if (uiDocument != null)
+            _root = uiDocument.rootVisualElement;
 
-        if (_root == null || template == null) return;
-        
+        if (_root == null || template == null)
+        {
+            Debug.LogWarning("[SAO] Cannot set screen - root or template is null");
+            return;
+        }
+
         _root.Clear();
         _currentScreen = template.CloneTree();
         _currentScreen.style.flexGrow = 1;
         _currentScreen.style.width = Length.Percent(100f);
         _currentScreen.style.height = Length.Percent(100f);
         _root.Add(_currentScreen);
-
-        PositionCanvas(transform);
     }
 
     public void ShowScanning()
@@ -70,8 +84,10 @@ public class UIManager : MonoBehaviour
         var playButton = _root.Q<Button>("PlayButton");
         if (playButton != null)
         {
-            playButton.clicked += () => {
-                if (ARGameManager.Instance != null) ARGameManager.Instance.StartGame();
+            playButton.clicked += () =>
+            {
+                if (ARGameManager.Instance != null)
+                    ARGameManager.Instance.StartGame();
             };
         }
     }
@@ -93,46 +109,16 @@ public class UIManager : MonoBehaviour
         var waveLabel = _root.Q<Label>("FinalWaveText");
         var retryButton = _root.Q<Button>("RetryButton");
 
-        if (scoreLabel != null) scoreLabel.text = $"Score: {score}";
-        if (waveLabel != null) waveLabel.text = $"Wave: {wave}";
+        if (scoreLabel != null)
+            scoreLabel.text = $"Final Score: {score}";
+        if (waveLabel != null)
+            waveLabel.text = $"Wave Cleared: {wave}";
         if (retryButton != null)
         {
-            retryButton.clicked += () => {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-            };
-        }
-    }
-
-    private void Update()
-    {
-        PositionCanvas(transform);
-
-        #if UNITY_EDITOR
-        if (ARGameManager.Instance != null && ARGameManager.Instance.currentState == GameState.GameOver)
-        {
-            if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.rKey.wasPressedThisFrame)
+            retryButton.clicked += () =>
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-            }
-        }
-        #endif
-    }
-
-    private void PositionCanvas(Transform canvasTransform, float distance = 1.8f)
-    {
-        Transform camTransform = Camera.main != null ? Camera.main.transform : null;
-        if (camTransform == null && ARGameManager.Instance != null)
-        {
-            var cam = FindFirstObjectByType<Camera>();
-            if (cam != null) camTransform = cam.transform;
-        }
-
-        if (camTransform != null)
-        {
-            Vector3 targetPos = camTransform.position + camTransform.forward * distance;
-            canvasTransform.position = Vector3.Lerp(canvasTransform.position, targetPos, Time.deltaTime * 5f);
-            canvasTransform.LookAt(camTransform.position);
-            canvasTransform.Rotate(0, 180, 0);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+            };
         }
     }
 
@@ -141,10 +127,15 @@ public class UIManager : MonoBehaviour
         float hpClamp = Mathf.Clamp01(float.IsNaN(healthPercent) ? 0f : healthPercent);
         float spClamp = Mathf.Clamp01(float.IsNaN(staminaPercent) ? 0f : staminaPercent);
 
-        if (_healthBarFill != null) _healthBarFill.style.width = Length.Percent(hpClamp * 100f);
-        if (_staminaBarFill != null) _staminaBarFill.style.width = Length.Percent(spClamp * 100f);
-        if (_waveText != null) _waveText.text = $"Wave: {wave}";
-        if (_enemyCountText != null) _enemyCountText.text = $"Enemies: {enemiesRemaining}";
-        if (_scoreText != null) _scoreText.text = $"Score: {score}";
+        if (_healthBarFill != null)
+            _healthBarFill.style.width = Length.Percent(hpClamp * 100f);
+        if (_staminaBarFill != null)
+            _staminaBarFill.style.width = Length.Percent(spClamp * 100f);
+        if (_waveText != null)
+            _waveText.text = $"Wave: {wave}";
+        if (_enemyCountText != null)
+            _enemyCountText.text = $"Enemies: {enemiesRemaining}";
+        if (_scoreText != null)
+            _scoreText.text = $"Score: {score}";
     }
 }
